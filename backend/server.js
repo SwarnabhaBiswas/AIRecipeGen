@@ -44,6 +44,19 @@ app.get('/',(req,res)=>{
     res.json({message:'Get request'})
 })
 
+// Health check route to ping both Backend and DB
+app.get('/health', async (req, res) => {
+  try {
+    // A simple query to ensure the DB connection is active
+    await pool.query('SELECT 1'); 
+    res.status(200).json({ status: 'OK', message: 'Backend and Database are awake' });
+  } catch (err) {
+    console.error('Health check failed', err);
+    res.status(500).json({ status: 'Error', message: 'Database unreachable' });
+  }
+});
+
+
 const PORT= process.env.PORT || 8000;
 
 app.listen(PORT,()=>{

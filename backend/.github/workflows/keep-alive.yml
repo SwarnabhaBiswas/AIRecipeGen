@@ -1,0 +1,13 @@
+name: Keep My PERN App Awake
+
+on:
+  schedule:
+    - cron: '*/14 * * * *' # Runs every 14 mins
+  workflow_dispatch:      # Allows you to click a button to run it manually
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Backend
+        run: curl -I "${{ secrets.BACKEND_URL }}/health"
